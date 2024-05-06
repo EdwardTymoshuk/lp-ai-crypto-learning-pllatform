@@ -14,10 +14,10 @@ const NavBar = () => {
 				<ul className="flex flex-col md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0">
 					{MENU_ITEMS.map((item: MENU_ITEMS_TYPE, index: number) => (
 						!item.sub?.length ?
-							<li>
+							<li key={item.name}>
 								<Link
 									key={index}
-									href="#"
+									href={item.path}
 									className={cn('flex items-center gap-2 w-full px-6 h-full text-text-primary hover:text-primary transition-all', {
 										'text-primary': currentPath === item.path
 									})}
@@ -26,12 +26,15 @@ const NavBar = () => {
 								</Link>
 							</li>
 							:
-							<li>
+							<li key={item.name}>
 								<Link
 									key={index}
-									href="#"
-									className="flex items-center gap-2 w-full rounded-lg py-2 text-text-primary hover:text-primary transition-all "
+									href='#'
+									className={cn('flex items-center gap-2 w-full rounded-lg py-2 text-text-primary hover:text-primary transition-all', {
+										'text-primary': item.sub?.map(item => item.path === currentPath)
+									})}
 								>
+
 									<Accordion type="single" collapsible>
 										<AccordionItem value={`item-${index}`} className='border-none relative'>
 											<div className='flex flex-row gap-2'>
@@ -42,8 +45,10 @@ const NavBar = () => {
 													item.sub?.map((subItem, subIndex) => (
 														<Link
 															key={subIndex}
-															href="#"
-															className="flex items-center gap-2 w-full rounded-lg py-2 px-6 text-text-primary/80 hover:text-primary transition-all "
+															href={subItem.path}
+															className={cn('flex items-center gap-2 w-full rounded-lg py-2 px-6 text-text-primary/80 hover:text-primary transition-all', {
+																'text-primary': currentPath === subItem.path
+															})}
 														>
 															<subItem.icon size={24} /> {subItem.name}
 														</Link>
